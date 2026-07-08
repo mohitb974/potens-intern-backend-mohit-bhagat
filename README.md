@@ -150,8 +150,10 @@ Approximate Usage:
 - 100+ messages
 
 Used For:
-- Prisma setup troubleshooting
-- Hash chain design guidance
-- Express route implementation
+- Backend architecture guidance
+- Prisma and SQLite setup
+- Hash chain design and verification logic
+- Pino logging integration
 - Git/GitHub troubleshooting
-- README drafting assistance
+- Documentation and README preparation
+- API testing support

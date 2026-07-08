@@ -94,4 +94,42 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/verify/all", async (req, res) => {
+  try {
+    const logs = await prisma.log.findMany({
+      orderBy: {
+        id: "asc"
+      }
+    });
+
+    for (const log of logs) {
+
+      const expectedHash = generateHash(
+        log.actor +
+        log.action +
+        log.payload +
+        log.previousHash
+      );
+
+      if (expectedHash !== log.currentHash) {
+        return res.json({
+          status: "FAIL",
+          brokenEntry: log.id
+        });
+      }
+    }
+
+    res.json({
+      status: "PASS"
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+});
+
 module.exports = router;

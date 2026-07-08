@@ -1,0 +1,17 @@
+generator client {
+  provider = "prisma-client"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Log {
+  id            Int      @id @default(autoincrement())
+  actor         String
+  action        String
+  payload       String
+  previousHash  String?
+  currentHash   String
+  createdAt     DateTime @default(now())
+}

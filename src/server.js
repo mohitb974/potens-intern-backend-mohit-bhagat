@@ -1,10 +1,13 @@
 const express = require("express");
+const pinoHttp = require("pino-http");
+const logger = require("./utils/logger");
 
 const logRoutes = require("./routes/logRoutes");
 
 const app = express();
 
 app.use(express.json());
+app.use(pinoHttp({ logger }));
 
 app.use("/log", logRoutes);
 

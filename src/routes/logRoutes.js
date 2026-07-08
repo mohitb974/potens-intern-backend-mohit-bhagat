@@ -57,4 +57,41 @@ router.post("/", auth, limiter, async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+
+    const log = await prisma.log.findUnique({
+      where: { id }
+    });
+
+    if (!log) {
+      return res.status(404).json({
+        message: "Log not found"
+      });
+    }
+
+    const expectedHash = generateHash(
+      log.actor +
+      log.action +
+      log.payload +
+      log.previousHash
+    );
+
+    const verified = expectedHash === log.currentHash;
+
+    res.json({
+      log,
+      verified
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: "Internal server error"
+    });
+  }
+});
+
 module.exports = router;
